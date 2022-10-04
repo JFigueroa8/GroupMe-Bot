@@ -12,7 +12,7 @@ GIPHY_KEY = os.getenv("GIPHY_KEY")
 
 url = f"https://api.groupme.com/v3/bots/post?bot_id={BOT_ID}"
 
-payload = json.dumps({"text": "This is a test"})
+payload = json.dumps({"text": "Heroku test"})
 
 x = requests.post(url, data=payload)
 
