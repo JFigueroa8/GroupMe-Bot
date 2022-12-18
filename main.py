@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 def search_gif(query):
-    response = requests.get(f'http://api.giphy.com/v1/gifs/search?q={query}&api_key={process.env.GIPHY_API_KEY}')
+    response = requests.get(f'http://api.giphy.com/v1/gifs/search?q={query}&api_key={GIPHY_API_KEY}')
     if response.status_code == 200:
         gif_data = response.json()
         gif_url = gif_data['data'][0]['url']
@@ -12,14 +12,14 @@ def search_gif(query):
 
 def send_message(sender_id, message_text):
     payload = {
-        'bot_id': process.env.BOT_ID,
+        'bot_id': BOT_ID,
         'text': message_text
     }
     requests.post('https://api.groupme.com/v3/bots/post', json=payload)
 
 def send_gif(sender_id, gif_url):
     payload = {
-        'bot_id': process.env.BOT_ID,
+        'bot_id': BOT_ID,
         'attachments': [{
             'type': 'image',
             'url': gif_url
