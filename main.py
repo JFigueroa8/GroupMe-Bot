@@ -1,24 +1,10 @@
 from flask import Flask, request
 import requests
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-GROUP_NAME = os.getenv("GROUP_NAME")
-BOT_ID = os.getenv("BOT_ID")
-GROUP_ID = os.getenv("GROUP_ID")
-
-
-# url = f"https://api.groupme.com/v3/bots/post?bot_id={BOT_ID}"
 
 app = Flask(__name__)
 
-GIPHY_API_KEY = os.getenv("GIPHY_KEY")
-GROUPME_API_TOKEN = os.getenv("GROUPME_API_TOKEN")
-
 def search_gif(query):
-    response = requests.get(f'http://api.giphy.com/v1/gifs/search?q={query}&api_key={GIPHY_API_KEY}')
+    response = requests.get(f'http://api.giphy.com/v1/gifs/search?q={query}&api_key={process.env.GIPHY_API_KEY}')
     if response.status_code == 200:
         gif_data = response.json()
         gif_url = gif_data['data'][0]['url']
@@ -26,14 +12,14 @@ def search_gif(query):
 
 def send_message(sender_id, message_text):
     payload = {
-        'bot_id': BOT_ID,
+        'bot_id': process.env.BOT_ID,
         'text': message_text
     }
     requests.post('https://api.groupme.com/v3/bots/post', json=payload)
 
 def send_gif(sender_id, gif_url):
     payload = {
-        'bot_id': BOT_ID,
+        'bot_id': process.env.BOT_ID,
         'attachments': [{
             'type': 'image',
             'url': gif_url
