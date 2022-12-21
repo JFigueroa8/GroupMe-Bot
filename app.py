@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 groupme_url = 'https://api.groupme.com/v3/bots/post'
 giphy_url = f'http://api.giphy.com/v1/gifs/search?api_key={giphy_api_key}&q='
+zenquotes_url = 'https://zenquotes.io/api/random'
 
 @app.route('/callback', methods=['POST', 'GET'])
 def callback():
@@ -27,6 +28,14 @@ def callback():
     payload = {
       'bot_id': bot_id,
       'text': gif,
+    }
+  elif '$quote' in text:
+    zenquotes_data = requests.get(zenquotes_url).json()
+    quote = zenquotes_data[0]['q']
+    author = zenquotes_data[0]['a']
+    payload = {
+      'bot_id': bot_id,
+      'text': f'"{quote}" - {author}',
     }
   else:
     return jsonify({'status': 'OK'}), 200
