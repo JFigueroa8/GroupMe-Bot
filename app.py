@@ -1,13 +1,16 @@
 import requests
 import random
+import time
 from flask import Flask, request, jsonify
-from config import access_token, bot_id, giphy_api_key
+from config import access_token, bot_id, giphy_api_key, dad_api
 
 app = Flask(__name__)
 
 groupme_url = 'https://api.groupme.com/v3/bots/post'
 giphy_url = f'http://api.giphy.com/v1/gifs/search?api_key={giphy_api_key}&q='
 zenquotes_url = 'https://zenquotes.io/api/random'
+dad_jokes_url = 'https://icanhazdadjoke.com/slack'
+
 
 @app.route('/callback', methods=['POST', 'GET'])
 def callback():
@@ -37,12 +40,20 @@ def callback():
       'bot_id': bot_id,
       'text': f'"{quote}" - {author}',
     }
+  elif '$dad joke' in text:
+    dad_jokes_data = requests.get(dad_jokes_url).json()
+    fallback = dad_jokes_data['attachments'][0]['fallback']
+
+    payload = {
+      'bot_id': bot_id,
+      'text': fallback,
+    }
   else:
     return jsonify({'status': 'OK'}), 200
 
   headers = {
     'Content-Type': 'application/json',
-    'X-Access-Token': access_token
+    'X-Access-Token': access_token,
   }
 
   response = requests.post(groupme_url, json=payload, headers=headers)
