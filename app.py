@@ -82,7 +82,7 @@ def callback():
       team1_record = event['competitors'][0]['record']
       team1_score = event['competitors'][0]['score']
       team2_name = event['competitors'][1]['displayName']
-      team2_record = event['competitors'][0]['record']
+      team2_record = event['competitors'][1]['record']
       team2_score = event['competitors'][1]['score']
 
       if int(team1_score) >= int(team2_score):
@@ -105,7 +105,7 @@ def callback():
       team1_record = event['competitors'][0]['record']
       team1_score = event['competitors'][0]['score']
       team2_name = event['competitors'][1]['displayName']
-      team2_record = event['competitors'][0]['record']
+      team2_record = event['competitors'][1]['record']
       team2_score = event['competitors'][1]['score']
 
       if team1_score == '' and team2_score == '':
@@ -130,7 +130,7 @@ def callback():
       team1_record = event['competitors'][0]['record']
       team1_score = event['competitors'][0]['score']
       team2_name = event['competitors'][1]['displayName']
-      team2_record = event['competitors'][0]['record']
+      team2_record = event['competitors'][1]['record']
       team2_score = event['competitors'][1]['score']
 
       if team1_score == '' and team2_score == '':
