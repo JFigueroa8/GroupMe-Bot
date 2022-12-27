@@ -39,5 +39,5 @@ while True:
     send_message()
 
   # Sleep for one minute before checking the time again
-  time.sleep(3600)
+  time.sleep(43200)
   print(current_time)
