@@ -86,9 +86,9 @@ def callback():
       team2_score = event['competitors'][1]['score']
 
       if int(team1_score) >= int(team2_score):
-        nba_games_list.append(f'{team1_name} - {team1_score}\n({team1_record})\n{team2_name} - {team2_score}\n({team2_record})')
+        nba_games_list.append(f'{team1_name} - {team1_score} - W\n({team1_record})\n{team2_name} - {team2_score} - L\n({team2_record})')
       else:
-        nba_games_list.append(f'{team2_name} - {team2_score}\n({team2_record})\n{team1_name} - {team1_score}\n({team1_record})')
+        nba_games_list.append(f'{team2_name} - {team2_score} - W\n({team2_record})\n{team1_name} - {team1_score} - L\n({team1_record})')
     
     for game in nba_games_list:
       payload = {
@@ -111,9 +111,9 @@ def callback():
       if team1_score == '' and team2_score == '':
         nba_games_list.append(f'UPCOMING GAME\n{team1_name} - TBD\n({team1_record})\n{team2_name} - TBD\n({team2_record})')
       elif int(team1_score) >= int(team2_score):
-        nba_games_list.append(f'{team1_name} - {team1_score}\n({team1_record})\n{team2_name} - {team2_score}\n({team2_record})')
+        nba_games_list.append(f'{team1_name} - {team1_score} - W\n({team1_record})\n{team2_name} - {team2_score} - L\n({team2_record})')
       else:
-        nba_games_list.append(f'{team2_name} - {team2_score}\n({team2_record})\n{team1_name} - {team1_score}\n({team1_record})')
+        nba_games_list.append(f'{team2_name} - {team2_score} - W\n({team2_record})\n{team1_name} - {team1_score} - L\n({team1_record})')
     
     for game in nba_games_list:
       payload = {
@@ -136,9 +136,9 @@ def callback():
       if team1_score == '' and team2_score == '':
         nfl_games_list.append(f'UPCOMING GAME\n{team1_name} - TBD\n({team1_record})\n{team2_name} - TBD\n({team2_record})')
       elif int(team1_score) >= int(team2_score):
-        nfl_games_list.append(f'{team1_name} - {team1_score}\n({team1_record})\n{team2_name} - {team2_score}\n({team2_record})')
+        nfl_games_list.append(f'{team1_name} - {team1_score} - W\n({team1_record})\n{team2_name} - {team2_score} - L\n({team2_record})')
       else:
-        nfl_games_list.append(f'{team2_name} - {team2_score}\n({team2_record})\n{team1_name} - {team1_score}\n({team1_record})')
+        nfl_games_list.append(f'{team2_name} - {team2_score} - W\n({team2_record})\n{team1_name} - {team1_score} - L\n({team1_record})')
     
     for game in nfl_games_list:
       payload = {
