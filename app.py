@@ -1,15 +1,14 @@
 import requests
 import random
 import time
-from datetime import date
-from datetime import timedelta
+from datetime import date, timedelta
 from flask import Flask, request, jsonify
 from config import access_token, bot_id, giphy_api_key, dad_api
 
 app = Flask(__name__)
 
 groupme_url = 'https://api.groupme.com/v3/bots/post'
-giphy_url = f'http://api.giphy.com/v1/gifs/search?api_key={giphy_api_key}&q='
+giphy_url = f'http://api.giphy.com/v1/gifs/search?api_key='
 zenquotes_url = 'https://zenquotes.io/api/random'
 dad_jokes_url = 'https://icanhazdadjoke.com/slack'
 chuck_norris_url = 'https://api.chucknorris.io/jokes/random'
@@ -34,7 +33,7 @@ def callback():
 
   if '$giphy' in text:
     text = text.replace('$giphy ', '').lower()
-    giphy_data = requests.get(giphy_url + text).json()
+    giphy_data = requests.get(f'{giphy_url}{giphy_api_key}&q={text}').json()
     results_length = len(giphy_data['data'])
     random_index = random.randint(0, results_length - 1)
     gif = giphy_data['data'][random_index]['images']['original']['url']
