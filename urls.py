@@ -7,3 +7,4 @@ nba_url = 'https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=basketb
 nfl_url = 'https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=football&league=nfl'
 snap_search_url = 'https://marvelsnap.io/api/search.php?database&n='
 snap_image_url = 'https://images.marvelsnap.io/images/cards/77.webp'
+snap_search_url_2 = 'https://marvelsnapzone.com/cards/'
