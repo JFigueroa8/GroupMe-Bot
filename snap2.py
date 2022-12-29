@@ -27,12 +27,16 @@ def grab_image_urls(character):
   # Iterate over the links and find the images with the attribute "data-src"
   image_links = []
   default_image = f"https://marvelsnapzone.com/wp-content/themes/blocksy-child/assets/media/cards/{character}.webp?v=25"
-  image_links.append(default_image)
+  response = requests.get(default_image)
+  if response.status_code == 200:
+    image_links.append(default_image)
 
   for link in links:
-      images = link.find_all('img', attrs={'data-src': True})
-      for image in images:
-          image_links.append(image['data-src'])
+    images = link.find_all('img', attrs={'data-src': True})
+    for image in images:
+      response = requests.get(image['data-src'])
+      if response.status_code == 200:
+        image_links.append(image['data-src'])
   return image_links
 
 # def grab_name_description(character_name):
