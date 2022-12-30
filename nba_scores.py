@@ -1,19 +1,11 @@
 import requests
-from datetime import date, timedelta
 from config import access_token, bot_id
 from urls import groupme_url, nba_url
 
-def yesterdays_nba_scores():
-  #Get yesterday's date
-  today = date.today()
-  yesterday = str(today - timedelta(days = 1))
-
-  #Format the date for the NBA API
-  formatted_yesterday = '&dates=' + yesterday.replace('-', '')
-
+def nba_scores():
   #Get the data from the NBA API
-  nba_data = requests.get(nba_url + formatted_yesterday).json()
-  
+  nba_data = requests.get(nba_url).json()
+
   nba_games_list = []
 
   #Get the games, team names, scores, and records
@@ -25,11 +17,14 @@ def yesterdays_nba_scores():
     team2_record = event['competitors'][1]['record']
     team2_score = event['competitors'][1]['score']
 
-    #If team1's score is greater than team2's score, team1 won and we'll display team1 first, otherwise we'll display team2 first
-    if int(team1_score) > int(team2_score):
-      nba_games_list.append(f'{team1_name} - {team1_score} - W\n({team1_record})\n{team2_name} - {team2_score} - L\n({team2_record})')
+    #If the game has not started display TBD for the score
+    #If team1 is leading in points during the game or after the game has finished, display team1 first, otherwise we'll display team2 first
+    if team1_score == '' and team2_score == '':
+      nba_games_list.append(f'UPCOMING GAME\n{team1_name} - TBD\n({team1_record})\n{team2_name} - TBD\n({team2_record})')
+    elif int(team1_score) >= int(team2_score):
+      nba_games_list.append(f'{team1_name} - {team1_score}\n({team1_record})\n{team2_name} - {team2_score}\n({team2_record})')
     else:
-      nba_games_list.append(f'{team2_name} - {team2_score} - W\n({team2_record})\n{team1_name} - {team1_score} - L\n({team1_record})')
+      nba_games_list.append(f'{team2_name} - {team2_score}\n({team2_record})\n{team1_name} - {team1_score}\n({team1_record})')
   
   #Loop through the games
   for game in nba_games_list:
