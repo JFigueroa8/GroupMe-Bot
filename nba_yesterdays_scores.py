@@ -26,7 +26,7 @@ def yesterdays_nba_scores():
     team2_score = event['competitors'][1]['score']
 
     #If team1's score is greater than team2's score, team1 won and we'll display team1 first, otherwise we'll display team2 first
-    if int(team1_score) >= int(team2_score):
+    if int(team1_score) > int(team2_score):
       nba_games_list.append(f'{team1_name} - {team1_score} - W\n({team1_record})\n{team2_name} - {team2_score} - L\n({team2_record})')
     else:
       nba_games_list.append(f'{team2_name} - {team2_score} - W\n({team2_record})\n{team1_name} - {team1_score} - L\n({team1_record})')
