@@ -1,5 +1,4 @@
 import requests
-import requests
 import os
 from flask import Flask, request, jsonify
 from config import access_token, bot_id
