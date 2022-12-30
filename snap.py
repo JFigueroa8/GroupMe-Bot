@@ -1,28 +1,75 @@
 import requests
+import requests
 import os
-import random
+import string
+import re
+import time
 from flask import Flask, request, jsonify
 from config import access_token, bot_id
-from urls import groupme_url, snap_search_url, snap_image_url
+from urls import groupme_url
 from io import BytesIO
 from PIL import Image
+from bs4 import BeautifulSoup
 
-def grab_card_images(character, id_list):
+def grab_image_urls(character):
+  # Set the URL of the website
+  url = f'https://marvelsnapzone.com/cards/{character}'
 
-  for id in id_list:
-    # URL of the image you want to download
-    image_url = f"https://images.marvelsnap.io/images/cards/{id}.webp"
+  # Send a request to the website and get the HTML code
+  response = requests.get(url)
+  html = response.text
 
+  # Load the HTML code into a Beautiful Soup object
+  soup = BeautifulSoup(html, 'html.parser')
+
+  # Find all the <a> tags with the class "variant"
+  links = soup.find_all('a', class_='variant')
+
+  # Iterate over the links and find the images with the attribute "data-src"
+  image_links = []
+  default_image = f"https://marvelsnapzone.com/wp-content/themes/blocksy-child/assets/media/cards/{character}.webp?v=25"
+  response = requests.get(default_image)
+  if response.status_code == 200:
+    image_links.append(default_image)
+
+  for link in links:
+    images = link.find_all('img', attrs={'data-src': True})
+    for image in images:
+      response = requests.get(image['data-src'])
+      if response.status_code == 200:
+        image_links.append(image['data-src'])
+  return image_links
+
+def grab_name_description(character_name):
+  # Make a request to the website and retrieve the HTML
+  html = requests.get(f"https://marvelsnapzone.com/cards/{character_name}").text
+  caps_character_name = string.capwords(character_name)
+  character_description = {}
+  # Use Beautiful Soup to parse the HTML
+  soup = BeautifulSoup(html, "html.parser")
+
+  a_tags = soup.find_all(href=re.compile(f"https://marvelsnapzone.com/cards/{character_name}"))
+  character_description['name'] = a_tags[1]["data-name"]
+  if a_tags[1]["data-ability"] == "":
+    character_description['ability'] = "No ability"
+  else:
+    character_description['ability'] = a_tags[1]["data-ability"]  
+
+  return character_description
+
+def grab_card_images(character_name, image_urls_list):
+  # Iterate over the list of image URLs
+  for count, url in enumerate(image_urls_list):
     # Send a GET request to the URL and save the response as a variable
-    response = requests.get(image_url)
-
+    response = requests.get(url)
+    
     # Open the response as an image using the Pillow library
     image = Image.open(BytesIO(response.content))
     # converting to jpg
     rgb_image = image.convert("RGB")
       
     # exporting the image
-    rgb_image.save(f"images/{character}-{id}.jpg")
+    rgb_image.save(f"images/{character_name}-{count}.jpg")
 
 app = Flask(__name__)
 
@@ -31,6 +78,10 @@ def callback():
   data = request.get_json()
   text = data['text']
   sender_type = data['sender_type']
+
+  # Remove all extra spaces
+  def remove_all_extra_spaces(string):
+      return " ".join(string.split())
 
   headers = {
     'Content-Type': 'application/json',
@@ -42,22 +93,21 @@ def callback():
 
   if '$snap' in text:
     text = text.replace('$snap ', '').lower()
-    character_name = text
-    character_data = requests.get(f'{snap_search_url}{text}').json()
-    default_card_id = []
-    default_card_id.append(character_data['card'][0]['id'])
+    character_name = remove_all_extra_spaces(text)
 
-    if character_data['card'][0]['variants']:
-      variants = character_data['card'][0]['variants'].split(',')
-      card_ids = default_card_id + variants
-    grab_card_images(character_name, card_ids)
-    # print(card_ids)
+    if ' ' in character_name:
+      character_name = character_name.replace(' ', '-')
+
+    print(character_name)
+    urls = grab_image_urls(character_name)
+    description = grab_name_description(character_name)
+    grab_card_images(character_name, urls)
+    image_url_list = []
 
     # directory for images
     directory = 'images'
- 
+
     # iterate over files in that directory
-    print(len(os.listdir(directory)))
     for filename in os.listdir(directory):
 
       # get the size of the image in bytes
@@ -67,15 +117,21 @@ def callback():
         'Content-Type': 'image/jpeg',
         'Content-Length': str(image_size),
         'X-Access-Token': access_token}
+
       groupme_response = requests.post(url='https://image.groupme.com/pictures', data=data, headers=headers)
       image_url = groupme_response.json()['payload']['picture_url']
+      image_url_list.append(image_url)
+      
+      # # Create an array of attachment objects, with the type set to "image" and the URL set to the image URL
+      # attachments = [{"type": "image", "url": url} for url in image_url_list]
+      # print(attachments)
 
       headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'image/jpeg',
       'X-Access-Token': access_token,
       }
 
-      payload = {
+      payload1 = {
         'bot_id': bot_id,
         'attachments': [
           {
@@ -84,7 +140,15 @@ def callback():
           }
         ],
       }
-      response = requests.post(groupme_url, json=payload, headers=headers)
+      response = requests.post(groupme_url, json=payload1, headers=headers)
+
+    time.sleep(1)
+
+    payload2 = {
+        'bot_id': bot_id,
+        'text': f"Name: {description['name']}\n\nAbility: {description['ability']}\n\n",
+      }
+    response = requests.post(groupme_url, json=payload2, headers=headers)
     
   else:
     return jsonify({'status': 'OK'}), 200
