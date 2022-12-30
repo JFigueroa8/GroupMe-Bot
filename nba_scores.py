@@ -3,7 +3,7 @@ from config import access_token, bot_id
 from urls import groupme_url, nba_url
 
 def nba_scores():
-  #Get the data from the NBA API
+  #Get the data from the ESPN API
   nba_data = requests.get(nba_url).json()
 
   nba_games_list = []

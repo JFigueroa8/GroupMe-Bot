@@ -8,10 +8,10 @@ def yesterdays_nba_scores():
   today = date.today()
   yesterday = str(today - timedelta(days = 1))
 
-  #Format the date for the NBA API
+  #Format the date for the ESPN API
   formatted_yesterday = '&dates=' + yesterday.replace('-', '')
 
-  #Get the data from the NBA API
+  #Get the data from the ESPN API
   nba_data = requests.get(nba_url + formatted_yesterday).json()
   
   nba_games_list = []
