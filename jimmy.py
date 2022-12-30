@@ -4,8 +4,6 @@ from config import access_token, bot_id
 from urls import groupme_url
 
 def jimmy_images():
-  image_url_list = []
-
   # directory for images
   directory = 'jimmy_images'
 
@@ -22,7 +20,6 @@ def jimmy_images():
 
     groupme_response = requests.post(url='https://image.groupme.com/pictures', data=data, headers=headers)
     image_url = groupme_response.json()['payload']['picture_url']
-    image_url_list.append(image_url)
 
     headers = {
     'Content-Type': 'image/jpeg',
