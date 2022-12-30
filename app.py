@@ -139,7 +139,7 @@ def callback():
         'text': game,
       }      
       response = requests.post(groupme_url, json=payload, headers=headers)
-  elif '$allen' in text:
+  elif '$best qb' in text:
     allen_dance()
   elif '$jimmy' in text:
     jimmy_images()
