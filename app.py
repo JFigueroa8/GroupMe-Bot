@@ -5,6 +5,8 @@ from datetime import date, timedelta
 from flask import Flask, request, jsonify
 from config import access_token, bot_id, giphy_api_key, dad_api
 from urls import groupme_url, giphy_url, zenquotes_url, dad_jokes_url, chuck_norris_url, nba_url, nfl_url
+from allen import allen_dance
+from jimmy import jimmy_images
 
 app = Flask(__name__)
 
@@ -137,6 +139,10 @@ def callback():
         'text': game,
       }      
       response = requests.post(groupme_url, json=payload, headers=headers)
+  elif '$allen' in text:
+    allen_dance()
+  elif '$jimmy' in text:
+    jimmy_images()
   else:
     return jsonify({'status': 'OK'}), 200
 
