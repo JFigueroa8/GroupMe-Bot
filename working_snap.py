@@ -80,6 +80,10 @@ def callback():
   text = data['text']
   sender_type = data['sender_type']
 
+  # Remove all extra spaces
+  def remove_all_extra_spaces(string):
+      return " ".join(string.split())
+
   headers = {
     'Content-Type': 'application/json',
     'X-Access-Token': access_token,
@@ -90,11 +94,12 @@ def callback():
 
   if '$snap' in text:
     text = text.replace('$snap ', '').lower()
-    character_name = text
+    character_name = remove_all_extra_spaces(text)
 
     if ' ' in character_name:
       character_name = character_name.replace(' ', '-')
 
+    print(character_name)
     urls = grab_image_urls(character_name)
     description = grab_name_description(character_name)
     grab_card_images(character_name, urls)
