@@ -17,6 +17,7 @@ def grab_gif(text):
   #Get the URL of the gif
   gif = giphy_data['data'][random_index]['images']['original']['url']
 
+  #Set the headers and payload
   headers = {
     'Content-Type': 'application/json',
     'X-Access-Token': access_token,
@@ -26,4 +27,6 @@ def grab_gif(text):
     'bot_id': bot_id,
     'text': gif,
   }
+
+  #Send the gif to GroupMe
   response = requests.post(groupme_url, json=payload, headers=headers)
