@@ -23,14 +23,23 @@ def grab_card_ids(character):
   # Load the HTML code into a Beautiful Soup object
   soup = BeautifulSoup(html, 'html.parser')
 
-  # Find the div tag with the class "list-variants"
-  div_tag = soup.find("div", {"class": "list-variants"})
-
-  # Find all the a tags within the div tag
-  a_tags = div_tag.find_all("a")
-
-  # Extract the href attribute values from the a tags
-  variant_card_links = [a.get("href") for a in a_tags]
+  # Find all the div tags with the class "card-variants"
+  div_tags = soup.find_all("div", {"class": "card-variants"})
+  
+  variant_card_links = []
+  
+  # Iterate over the div tags
+  for div_tag in div_tags:
+    # Find the h2 element within the div tag
+    h2_element = div_tag.find("h2")
+    # If the text of the h2 element is "Variants"
+    if h2_element.text == "Variants":
+      # Find all the a tags within the div tag
+      a_tags = div_tag.find_all("a")
+      # Extract the href attribute values from the a tags
+      href_values = [a.get("href") for a in a_tags]
+      # Add the href values to the list of variant card links
+      variant_card_links.extend(href_values)
 
   for url in variant_card_links:  
     # Extract the text from the sibling div tags then add it to the dictionary
@@ -142,6 +151,7 @@ def grab_image_urls(character):
       response = requests.get(image['data-src'])
       if response.status_code == 200:
         image_links.append(image['data-src'])
+  
   return image_links
 
 def grab_card_images(card_description_list):
