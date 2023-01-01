@@ -14,8 +14,8 @@ def its_easy_boys():
     'attachments': [
       {
         "type": "video",
-        "preview_url": "https://v.groupme.com/88126238/2022-12-30T04:19:34Z/7d992d97.1080x1920r0.jpg",
-        "url": "https://v.groupme.com/88126238/2022-12-30T04:19:34Z/7d992d97.1080x1920r0.mp4"
+        "preview_url": "https://v.groupme.com/88126238/2023-01-01T02:09:53Z/745877f1.1080x1920r0.jpg",
+        "url": "https://v.groupme.com/88126238/2023-01-01T02:09:53Z/745877f1.1080x1920r0.mp4"
       }
     ],
   }
