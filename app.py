@@ -19,7 +19,6 @@ from steve_kick import kick
 from yeet import yeet
 from steve_splash import splash
 from commands import command_list
-from test import hello
 from shrimp import shrimp_images
 from madden import madden
 from spider_monkey import spider_monkey
@@ -79,8 +78,6 @@ def callback():
     splash()
   elif '$commands' in text:
     command_list()
-  elif '$hello' in text:
-    hello()
   elif '$shrimp' in text:
     shrimp_images()
   elif '$madden' in text or '$champion' in text:
