@@ -11,7 +11,7 @@ def command_list():
 
   payload = {
     'bot_id': bot_id,
-    'text': """$giphy <search term> - returns a random gif from Giphy
+    'text': """$giphy <search term> - returns a random gif from Giphy using that search term
 
 $quote - returns a random quote
 
