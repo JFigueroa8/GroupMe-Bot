@@ -18,6 +18,7 @@ from clutch import clutch
 from steve_kick import kick
 from yeet import yeet
 from steve_splash import splash
+from commands import command_list
 
 app = Flask(__name__)
 
@@ -68,6 +69,8 @@ def callback():
     yeet()
   elif '$splash' in text:
     splash()
+  elif '$command' in text:
+    command_list()
   else:
     return jsonify({'status': 'OK'}), 200
 
