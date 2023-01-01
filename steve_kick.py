@@ -2,7 +2,7 @@ import requests
 from config import access_token, bot_id
 from urls import groupme_url
 
-def its_easy_boys():
+def kick():
   # Set the headers and payload
   headers = {
   'Content-Type': 'application/json',
@@ -14,8 +14,8 @@ def its_easy_boys():
     'attachments': [
       {
         "type": "video",
-        "preview_url": "https://v.groupme.com/88126238/2022-12-30T04:19:34Z/7d992d97.1080x1920r0.jpg",
-        "url": "https://v.groupme.com/88126238/2022-12-30T04:19:34Z/7d992d97.1080x1920r0.mp4"
+        "preview_url": "https://v.groupme.com/88126238/2022-12-30T18:46:12Z/7e34c71f.640x352r0.jpg",
+        "url": "https://v.groupme.com/88126238/2022-12-30T18:46:12Z/7e34c71f.640x352r0.mp4"
       }
     ],
   }

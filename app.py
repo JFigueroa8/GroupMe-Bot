@@ -10,6 +10,14 @@ from nba_scores import nba_scores
 from nfl_scores import nfl_scores
 from easy import its_easy_boys
 from saw_everything import saw_everything
+from tom_hanks import busy
+from defeated import defeated
+from snoop_who import snoop_who
+from tuga_laugh import tuga_laugh
+from clutch import clutch
+from steve_kick import kick
+from yeet import yeet
+from steve_splash import splash
 
 app = Flask(__name__)
 
@@ -44,6 +52,22 @@ def callback():
     its_easy_boys()
   elif '$saw everything' in text:
     saw_everything()
+  elif '$busy' in text:
+    busy()
+  elif '$defeated' in text:
+    defeated()
+  elif '$who' in text:
+    snoop_who()
+  elif '$laugh' in text:
+    tuga_laugh()
+  elif '$clutch' in text:
+    clutch()
+  elif '$kick' in text:
+    kick()
+  elif '$yeet' in text:
+    yeet()
+  elif '$splash' in text:
+    splash()
   else:
     return jsonify({'status': 'OK'}), 200
 
