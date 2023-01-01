@@ -1,8 +1,6 @@
 import requests
 import os
-import string
 import re
-import time
 from flask import Flask, request, jsonify
 from config import access_token, bot_id
 from urls import groupme_url
