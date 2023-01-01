@@ -11,7 +11,7 @@ groupme_url = 'https://api.groupme.com/v3/bots/post'
 zenquotes_url = 'https://zenquotes.io/api/random'
 
 # Set the time you want the message to be sent every day (in EST)
-SEND_TIME = "09:00:00"
+SEND_TIME = "08:00:00"
 
 def send_message():
   # The message you want to send

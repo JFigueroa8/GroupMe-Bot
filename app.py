@@ -19,6 +19,14 @@ from steve_kick import kick
 from yeet import yeet
 from steve_splash import splash
 from commands import command_list
+from test import hello
+from shrimp import shrimp_images
+from madden import madden
+from spider_monkey import spider_monkey
+from mistakes import mistakes
+from footlong import footlong
+from middle_aged import middle_aged
+from comrade_dennis import comrade_dennis
 
 app = Flask(__name__)
 
@@ -45,7 +53,7 @@ def callback():
     nba_scores()
   elif '$nfl' in text:
     nfl_scores()
-  elif '$best qb' in text:
+  elif '$best qb' in text or '$karma' in text:
     allen_dance()
   elif '$jimmy' in text:
     jimmy_images()
@@ -69,8 +77,24 @@ def callback():
     yeet()
   elif '$splash' in text:
     splash()
-  elif '$command' in text:
+  elif '$commands' in text:
     command_list()
+  elif '$hello' in text:
+    hello()
+  elif '$shrimp' in text:
+    shrimp_images()
+  elif '$madden' in text or '$champion' in text:
+    madden()
+  elif '$spider monkey' in text or '$joe' in text or '$best promo' in text:
+    spider_monkey()
+  elif '$mistakes' in text or '$blonde' in text:
+    mistakes()
+  elif '$footlong' in text or '$meat to the face' in text:
+    footlong()
+  elif '$middle_aged' in text or '$ricky' in text:
+    middle_aged()
+  elif '$comrade_dennis' in text or '$dennis' in text:
+    comrade_dennis()
   else:
     return jsonify({'status': 'OK'}), 200
 
