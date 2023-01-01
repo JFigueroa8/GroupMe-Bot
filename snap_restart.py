@@ -41,7 +41,8 @@ def grab_card_ids(character):
       # Add the href values to the list of variant card links
       variant_card_links.extend(href_values)
 
-  for url in variant_card_links:  
+  for url in variant_card_links:
+    
     # Extract the text from the sibling div tags then add it to the dictionary
     variant_id = url.split("/")
     variant_id = variant_id[-2]
@@ -53,8 +54,11 @@ def grab_card_ids(character):
 def grab_every_description(list_of_ids, character_name):
   character_description_list = []
   variant_image_urls_list = grab_image_urls(character_name)
-  # print(variant_image_urls_list)
+  print('Length of variant_image_urls_list: ', len(variant_image_urls_list))
+  print('Length of list_of_ids: ', len(list_of_ids))
+
   for count, id in enumerate(list_of_ids):
+    # print(list_of_ids)
     character_description = {}
     if count == 0:
       # Make a request to the website and retrieve the HTML
@@ -115,6 +119,7 @@ def grab_every_description(list_of_ids, character_name):
       # Check if the div_tag_rarity is None, if it is then the card is an unreleased card and we'll assign it the card status text which should be "Unreleased"
       if div_tag_rarity == None:
         div_tag_rarity = card_status_text
+        # print(id)
         character_description = {'card_id': id, 'status': card_status_text, 'rarity': div_tag_rarity, 'image_url': variant_image_urls_list[count-1]}
         character_description_list.append(character_description)
       else:
@@ -124,7 +129,7 @@ def grab_every_description(list_of_ids, character_name):
         character_description = {'card_id': id, 'status': card_status_text, 'rarity': card_rarity_text, 'image_url': variant_image_urls_list[count-1]}
         # Variant ID, Status, Rarity
         character_description_list.append(character_description)
-
+  # print(character_description_list)
   return character_description_list
 
 def grab_image_urls(character):
@@ -149,8 +154,11 @@ def grab_image_urls(character):
 
     for image in images:
       response = requests.get(image['data-src'])
+      print(image)
       if response.status_code == 200:
         image_links.append(image['data-src'])
+      else:
+        print(f'Error for image {image} - {image["data-src"]}')
   
   return image_links
 
@@ -195,8 +203,14 @@ def callback():
       character_name = character_name.replace(' ', '-')
 
     card_ids = grab_card_ids(character_name)
-    list_of_descriptions = grab_every_description(card_ids, character_name)
     urls = grab_image_urls(character_name)
+
+    # ******** WORKAROUND FOR HULK *******************
+    if character_name == 'hulk':
+      card_ids.pop()
+      print(f'card_ids length - {len(card_ids)}')
+      print(f'urls length - {len(urls)}')
+    list_of_descriptions = grab_every_description(card_ids, character_name)
     grab_card_images(list_of_descriptions)
 
     image_url_list = []
@@ -277,29 +291,6 @@ def callback():
           ],
         }
         response = requests.post(groupme_url, json=variant_card_payload, headers=variant_card_headers)
-        
-
-    # for count, url in enumerate(image_url_list):
-    #   # print(f'{count}-{url}')
-    #   payload = {
-    #     'bot_id': bot_id,
-    #     # 'text': f"Status: {variant_status_rarity[count][1]}\n\nRarity: {variant_status_rarity[count][2]}\n",
-    #     'attachments': [
-    #       {
-    #       'type': 'image',
-    #       'url': url,
-    #       }
-    #     ],
-    #   }
-    #   response = requests.post(groupme_url, json=payload, headers=headers_2)
-
-    # time.sleep(1)
-
-    # payload2 = {
-    #     'bot_id': bot_id,
-    #     'text': f"Name: {description['name']}\n\nAbility: {description['ability']}\n\nStatus: {description['status']}\n",
-    #   }
-    # response = requests.post(groupme_url, json=payload2, headers=headers)
     
   else:
     return jsonify({'status': 'OK'}), 200
