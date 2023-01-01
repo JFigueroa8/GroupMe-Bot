@@ -88,9 +88,9 @@ def callback():
     mistakes()
   elif '$footlong' in text or '$meat to the face' in text:
     footlong()
-  elif '$middle_aged' in text or '$ricky' in text:
+  elif '$middle aged' in text or '$ricky' in text:
     middle_aged()
-  elif '$comrade_dennis' in text or '$dennis' in text:
+  elif '$comrade dennis' in text or '$dennis' in text:
     comrade_dennis()
   else:
     return jsonify({'status': 'OK'}), 200
