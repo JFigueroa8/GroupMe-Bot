@@ -28,6 +28,8 @@ from middle_aged import middle_aged
 from comrade_dennis import comrade_dennis
 from fart import fart
 from king import king
+from gizmo import gizmo
+from latin_king import latin_king
 
 app = Flask(__name__)
 
@@ -98,6 +100,10 @@ def callback():
     fart()
   elif '$king' in text or '$wakanda' in text or '$black panther' in text:
     king()
+  elif '$gizmo' in text:
+    gizmo()
+  elif '$latin king' in text or '$namor' in text:
+    latin_king()
   else:
     return jsonify({'status': 'OK'}), 200
 
