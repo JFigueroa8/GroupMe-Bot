@@ -52,9 +52,9 @@ def grab_card_ids(character):
 def grab_every_description(card_ids, character_name):
   character_description_list = []
   variant_image_urls_list = grab_image_urls(character_name)
-  url = f"https://marvelsnapzone.com/cards/{id}"
 
   for count, id in enumerate(card_ids):
+    url = f"https://marvelsnapzone.com/cards/{id}"
     character_description = {}
     if count == 0:
       # Make a request to the website and retrieve the HTML
