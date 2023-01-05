@@ -31,6 +31,7 @@ from commands.king import king
 from commands.gizmo import gizmo
 from commands.latin_king import latin_king
 from commands.snap import snap
+from commands.dancing import dancing
 from configuration.config import access_token, bot_id, giphy_api_key, group_id
 from configuration.urls import groupme_url, giphy_url, zenquotes_url, dad_jokes_url, chuck_norris_url, nba_url, nfl_url
 
@@ -105,6 +106,8 @@ def callback():
     king(access_token, bot_id, groupme_url)
   elif '$gizmo' in text:
     gizmo(access_token, bot_id, groupme_url)
+  elif '$super pause' in text:
+    dancing(access_token, bot_id, groupme_url)
   elif '$latin king' in text or '$namor' in text:
     latin_king(access_token, bot_id, groupme_url)
   elif '$snap' in text:
