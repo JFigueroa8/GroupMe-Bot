@@ -30,6 +30,7 @@ from commands.fart import fart
 from commands.king import king
 from commands.gizmo import gizmo
 from commands.latin_king import latin_king
+from commands.snap import snap
 from configuration.config import access_token, bot_id, giphy_api_key, group_id
 from configuration.urls import groupme_url, giphy_url, zenquotes_url, dad_jokes_url, chuck_norris_url, nba_url, nfl_url
 
@@ -106,6 +107,18 @@ def callback():
     gizmo(access_token, bot_id, groupme_url)
   elif '$latin king' in text or '$namor' in text:
     latin_king(access_token, bot_id, groupme_url)
+  elif '$snap' in text:
+    # Remove all extra spaces
+    def remove_all_extra_spaces(string):
+        return " ".join(string.split())
+
+    text = text.replace('$snap ', '').lower()
+    character_name = remove_all_extra_spaces(text)
+
+    if ' ' in character_name:
+      character_name = character_name.replace(' ', '-')
+
+    snap(character_name, access_token, bot_id, groupme_url)
   else:
     return jsonify({'status': 'OK'}), 200
 

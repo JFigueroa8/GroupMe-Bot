@@ -1,9 +1,6 @@
 import requests
 import os
 import re
-from flask import Flask, request, jsonify
-from configuration.config import access_token, bot_id
-from configuration.urls import groupme_url
 from io import BytesIO
 from PIL import Image
 from bs4 import BeautifulSoup
@@ -45,9 +42,9 @@ def grab_card_ids(character, response):
   
   return card_ids
 
-def grab_every_description(card_ids, character_name, main_card_url, main_card_response):
+def grab_every_description(card_ids, main_card_url, main_card_response):
   character_description_list = []
-  variant_image_urls_list = grab_image_urls(character_name, main_card_response)
+  variant_image_urls_list = grab_image_urls(main_card_response)
 
   for count, id in enumerate(card_ids):
     character_description = {}
@@ -126,7 +123,7 @@ def grab_every_description(card_ids, character_name, main_card_url, main_card_re
   
   return character_description_list
 
-def grab_image_urls(character, response):
+def grab_image_urls(response):
   # Extract the HTML code from the response 
   html = response.text
 
@@ -157,7 +154,6 @@ def grab_card_images(card_description_list):
   for count, card in enumerate(card_description_list):
     # Send a GET request to the URL and save the response as a variable
     url = card['image_url']
-    card_id = card['card_id']
     
     response = requests.get(url)
     
@@ -170,33 +166,12 @@ def grab_card_images(card_description_list):
     # exporting the image
     rgb_image.save(f"images/{count}.jpg")
 
-app = Flask(__name__)
-
-@app.route('/callback', methods=['POST', 'GET'])
-def callback():
-  data = request.get_json()
-  text = data['text']
-  sender_type = data['sender_type']
-
-  # Remove all extra spaces
-  def remove_all_extra_spaces(string):
-      return " ".join(string.split())
-
-  if sender_type != "user":
-    return jsonify({'status': 'OK'}), 200
-
-  if '$snap' in text:
-    text = text.replace('$snap ', '').lower()
-    character_name = remove_all_extra_spaces(text)
-
-    if ' ' in character_name:
-      character_name = character_name.replace(' ', '-')
-
+def snap(character_name, access_token, bot_id, groupme_url):
     main_card_url = f'https://marvelsnapzone.com/cards/{character_name}'
     main_card_response = requests.get(main_card_url)
 
     card_ids = grab_card_ids(character_name, main_card_response)
-    list_of_descriptions = grab_every_description(card_ids, character_name, main_card_url, main_card_response)
+    list_of_descriptions = grab_every_description(card_ids, main_card_url, main_card_response)
     grab_card_images(list_of_descriptions)
 
     image_url_list = []
@@ -278,22 +253,13 @@ def callback():
           ],
         }
         response = requests.post(groupme_url, json=variant_card_payload, headers=variant_card_headers)
-    
-  else:
-    return jsonify({'status': 'OK'}), 200
 
-  # Iterate over all the files in the directory
-  for file in os.listdir(directory):
-      # Construct the full file path
-      file_path = os.path.join(directory, file)
+    # Iterate over all the files in the directory
+    for file in os.listdir(directory):
+        # Construct the full file path
+        file_path = os.path.join(directory, file)
 
-      # Check if the file is a regular file (not a directory)
-      if os.path.isfile(file_path):
-          # Delete the file
-          os.remove(file_path)
-
-  return jsonify({'status': 'OK'}), 200
-
-if __name__ == '__main__':
-  app.debug = True
-  app.run(port=3000)
+        # Check if the file is a regular file (not a directory)
+        if os.path.isfile(file_path):
+            # Delete the file
+            os.remove(file_path)
