@@ -8,14 +8,10 @@ from io import BytesIO
 from PIL import Image
 from bs4 import BeautifulSoup
 
-def grab_card_ids(character):
+def grab_card_ids(character, response):
   card_ids = []
   card_ids.append(character)
-   # Set the URL of the website
-  url = f'https://marvelsnapzone.com/cards/{character}'
-
-  # Send a request to the website and get the HTML code
-  response = requests.get(url)
+  
   html = response.text
 
   # Load the HTML code into a Beautiful Soup object
@@ -49,22 +45,20 @@ def grab_card_ids(character):
   
   return card_ids
 
-def grab_every_description(card_ids, character_name):
+def grab_every_description(card_ids, character_name, main_card_url, main_card_response):
   character_description_list = []
-  variant_image_urls_list = grab_image_urls(character_name)
+  variant_image_urls_list = grab_image_urls(character_name, main_card_response)
 
   for count, id in enumerate(card_ids):
-    url = f"https://marvelsnapzone.com/cards/{id}"
     character_description = {}
     if count == 0:
-      # Make a request to the website and retrieve the HTML
-      html = requests.get(url).text
-
+      html = main_card_response.text
+      
       # Use Beautiful Soup to parse the HTML
       soup = BeautifulSoup(html, "html.parser")
 
       # Find all the a tags with the href attribute value that contains the character name
-      a_tags = soup.find_all(href=re.compile(url))
+      a_tags = soup.find_all(href=re.compile(main_card_url))
       
       character_description['name'] = a_tags[1]["data-name"]
       if a_tags[1]["data-ability"] == "":
@@ -95,9 +89,10 @@ def grab_every_description(card_ids, character_name):
 
     else:
       variant_url = f"https://marvelsnapzone.com/variants/{id}"
+      
       # Make a request to the website and retrieve the HTML
       html = requests.get(variant_url).text
-
+      
       # Use Beautiful Soup to parse the HTML
       soup = BeautifulSoup(html, "html.parser")
 
@@ -121,22 +116,18 @@ def grab_every_description(card_ids, character_name):
           div_tag_rarity = card_status_text
           character_description = {'card_id': id, 'status': card_status_text, 'rarity': div_tag_rarity, 'image_url': variant_image_urls_list[count-1]}
           character_description_list.append(character_description)
+
         else:
           # Find the sibling div tags and extract the text from the sibling div tags then add it to the dictionary
           rarity_sibling_div_tags = div_tag_rarity.find_next_siblings("div")
           card_rarity_text = rarity_sibling_div_tags[0].text
           character_description = {'card_id': id, 'status': card_status_text, 'rarity': card_rarity_text, 'image_url': variant_image_urls_list[count-1]}
-          # Variant ID, Status, Rarity
           character_description_list.append(character_description)
   
   return character_description_list
 
-def grab_image_urls(character):
-  # Set the URL of the website
-  url = f'https://marvelsnapzone.com/cards/{character}'
-
-  # Send a request to the website and get the HTML code
-  response = requests.get(url)
+def grab_image_urls(character, response):
+  # Extract the HTML code from the response 
   html = response.text
 
   # Load the HTML code into a Beautiful Soup object
@@ -153,7 +144,7 @@ def grab_image_urls(character):
 
     for image in images:
       response = requests.get(image['data-src'])
-    
+      
       if response.status_code == 200:
         image_links.append(image['data-src'])
       else:
@@ -167,10 +158,12 @@ def grab_card_images(card_description_list):
     # Send a GET request to the URL and save the response as a variable
     url = card['image_url']
     card_id = card['card_id']
+    
     response = requests.get(url)
     
     # Open the response as an image using the Pillow library
     image = Image.open(BytesIO(response.content))
+
     # converting to jpg
     rgb_image = image.convert("RGB")
       
@@ -199,9 +192,11 @@ def callback():
     if ' ' in character_name:
       character_name = character_name.replace(' ', '-')
 
-    card_ids = grab_card_ids(character_name)
+    main_card_url = f'https://marvelsnapzone.com/cards/{character_name}'
+    main_card_response = requests.get(main_card_url)
 
-    list_of_descriptions = grab_every_description(card_ids, character_name)
+    card_ids = grab_card_ids(character_name, main_card_response)
+    list_of_descriptions = grab_every_description(card_ids, character_name, main_card_url, main_card_response)
     grab_card_images(list_of_descriptions)
 
     image_url_list = []
@@ -230,7 +225,7 @@ def callback():
       card_status = card['status']
       card['groupme_image_url'] = image_url_list[count]
       card_groupme_url = card['groupme_image_url']
-      # print(card)
+      
       card_id = card['card_id']
 
       if count == 0:
@@ -259,6 +254,7 @@ def callback():
           ],
         }
         response = requests.post(groupme_url, json=main_card_payload, headers=main_card_headers)
+
       else:
         if card['rarity'] == None:
           card_rarity = card_status
