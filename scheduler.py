@@ -1,4 +1,4 @@
-from config import access_token, bot_id, group_id
+from configuration.config import access_token, bot_id, group_id
 import datetime
 import time
 import requests

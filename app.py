@@ -1,35 +1,37 @@
 from flask import Flask, request, jsonify
-from allen import allen_dance
-from jimmy import jimmy_images
-from giphy import grab_gif
-from quote import random_quote
-from dad_jokes import dad_joke
-from chuck_norris import chuck_joke
-from nba_yesterdays_scores import yesterdays_nba_scores
-from nba_scores import nba_scores
-from nfl_scores import nfl_scores
-from easy import its_easy_boys
-from saw_everything import saw_everything
-from tom_hanks import busy
-from defeated import defeated
-from snoop_who import snoop_who
-from tuga_laugh import tuga_laugh
-from clutch import clutch
-from steve_kick import kick
-from yeet import yeet
-from steve_splash import splash
-from commands import command_list
-from shrimp import shrimp_images
-from madden import madden
-from spider_monkey import spider_monkey
-from mistakes import mistakes
-from footlong import footlong
-from middle_aged import middle_aged
-from comrade_dennis import comrade_dennis
-from fart import fart
-from king import king
-from gizmo import gizmo
-from latin_king import latin_king
+from commands.allen import allen_dance
+from commands.jimmy import jimmy_images
+from commands.giphy import grab_gif
+from commands.quote import random_quote
+from commands.dad_jokes import dad_joke
+from commands.chuck_norris import chuck_joke
+from commands.nba_yesterdays_scores import yesterdays_nba_scores
+from commands.nba_scores import nba_scores
+from commands.nfl_scores import nfl_scores
+from commands.easy import its_easy_boys
+from commands.saw_everything import saw_everything
+from commands.tom_hanks import busy
+from commands.defeated import defeated
+from commands.snoop_who import snoop_who
+from commands.tuga_laugh import tuga_laugh
+from commands.clutch import clutch
+from commands.steve_kick import kick
+from commands.yeet import yeet
+from commands.steve_splash import splash
+from commands.commands_list import commands_list
+from commands.shrimp import shrimp_images
+from commands.madden import madden
+from commands.spider_monkey import spider_monkey
+from commands.mistakes import mistakes
+from commands.footlong import footlong
+from commands.middle_aged import middle_aged
+from commands.comrade_dennis import comrade_dennis
+from commands.fart import fart
+from commands.king import king
+from commands.gizmo import gizmo
+from commands.latin_king import latin_king
+from configuration.config import access_token, bot_id, giphy_api_key, dad_api, group_id
+from configuration.urls import groupme_url, giphy_url, zenquotes_url, dad_jokes_url, chuck_norris_url, nba_url, nfl_url
 
 app = Flask(__name__)
 
@@ -43,67 +45,67 @@ def callback():
     return jsonify({'status': 'OK'}), 200
 
   if '$giphy' in text:
-    grab_gif(text)
+    grab_gif(text, access_token, bot_id, groupme_url, giphy_url, giphy_api_key)
   elif '$quote' in text:
-    random_quote()
+    random_quote(access_token, bot_id, groupme_url, zenquotes_url)
   elif '$dad joke' in text:
-    dad_joke()
+    dad_joke(access_token, bot_id, groupme_url, dad_jokes_url, dad_api)
   elif '$chuck' in text:
-    chuck_joke()
+    chuck_joke(access_token, bot_id, groupme_url, chuck_norris_url)
   elif '$nba yesterday' in text:
-    yesterdays_nba_scores()
+    yesterdays_nba_scores(access_token, bot_id, groupme_url, nba_url)
   elif '$nba' in text:
-    nba_scores()
+    nba_scores(access_token, bot_id, groupme_url, nba_url)
   elif '$nfl' in text:
-    nfl_scores()
+    nfl_scores(access_token, bot_id, groupme_url, nfl_url)
   elif '$best qb' in text or '$karma' in text:
-    allen_dance()
+    allen_dance(access_token, bot_id, groupme_url)
   elif '$jimmy' in text:
-    jimmy_images()
+    jimmy_images(access_token, bot_id, groupme_url)
   elif '$easy' in text:
-    its_easy_boys()
+    its_easy_boys(access_token, bot_id, groupme_url)
   elif '$saw everything' in text:
-    saw_everything()
+    saw_everything(access_token, bot_id, groupme_url)
   elif '$busy' in text:
-    busy()
+    busy(access_token, bot_id, groupme_url)
   elif '$defeated' in text:
-    defeated()
+    defeated(access_token, bot_id, groupme_url)
   elif '$who' in text:
-    snoop_who()
+    snoop_who(access_token, bot_id, groupme_url)
   elif '$laugh' in text:
-    tuga_laugh()
+    tuga_laugh(access_token, bot_id, groupme_url)
   elif '$clutch' in text:
-    clutch()
+    clutch(access_token, bot_id, groupme_url)
   elif '$kick' in text:
-    kick()
+    kick(access_token, bot_id, groupme_url)
   elif '$yeet' in text:
-    yeet()
+    yeet(access_token, bot_id, groupme_url)
   elif '$splash' in text:
-    splash()
+    splash(access_token, bot_id, groupme_url)
   elif '$commands' in text:
-    command_list()
+    commands_list(access_token, bot_id, groupme_url)
   elif '$shrimp' in text:
-    shrimp_images()
+    shrimp_images(access_token, bot_id, groupme_url)
   elif '$madden' in text or '$champion' in text:
-    madden()
+    madden(access_token, bot_id, groupme_url)
   elif '$spider monkey' in text or '$joe' in text or '$best promo' in text:
-    spider_monkey()
+    spider_monkey(access_token, bot_id, groupme_url)
   elif '$mistakes' in text or '$blonde' in text:
-    mistakes()
+    mistakes(access_token, bot_id, groupme_url)
   elif '$footlong' in text or '$meat to the face' in text:
-    footlong()
+    footlong(access_token, bot_id, groupme_url)
   elif '$middle aged' in text or '$ricky' in text:
-    middle_aged()
+    middle_aged(access_token, bot_id, groupme_url)
   elif '$comrade dennis' in text or '$dennis' in text:
-    comrade_dennis()
+    comrade_dennis(access_token, bot_id, groupme_url)
   elif '$fart' in text or '$rodney' in text or '$cory' in text:
-    fart()
+    fart(access_token, bot_id, groupme_url)
   elif '$king' in text or '$wakanda' in text or '$black panther' in text:
-    king()
+    king(access_token, bot_id, groupme_url)
   elif '$gizmo' in text:
-    gizmo()
+    gizmo(access_token, bot_id, groupme_url)
   elif '$latin king' in text or '$namor' in text:
-    latin_king()
+    latin_king(access_token, bot_id, groupme_url)
   else:
     return jsonify({'status': 'OK'}), 200
 
