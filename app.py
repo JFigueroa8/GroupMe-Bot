@@ -30,7 +30,7 @@ from commands.fart import fart
 from commands.king import king
 from commands.gizmo import gizmo
 from commands.latin_king import latin_king
-from configuration.config import access_token, bot_id, giphy_api_key, dad_api, group_id
+from configuration.config import access_token, bot_id, giphy_api_key, group_id
 from configuration.urls import groupme_url, giphy_url, zenquotes_url, dad_jokes_url, chuck_norris_url, nba_url, nfl_url
 
 app = Flask(__name__)
@@ -49,7 +49,7 @@ def callback():
   elif '$quote' in text:
     random_quote(access_token, bot_id, groupme_url, zenquotes_url)
   elif '$dad joke' in text:
-    dad_joke(access_token, bot_id, groupme_url, dad_jokes_url, dad_api)
+    dad_joke(access_token, bot_id, groupme_url, dad_jokes_url)
   elif '$chuck' in text:
     chuck_joke(access_token, bot_id, groupme_url, chuck_norris_url)
   elif '$nba yesterday' in text:
