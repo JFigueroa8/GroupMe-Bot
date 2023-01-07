@@ -158,7 +158,7 @@ def callback():
     ride_name = remove_all_extra_spaces(text)
 
     disney_wait_times(access_token, bot_id, groupme_url, park_url, ride_name)
-  elif '$hollwood studios' in text:
+  elif '$hollywood studios' in text:
     park_url = 'https://api.themeparks.wiki/preview/parks/WaltDisneyWorldHollywoodStudios/waittime'
 
     # Remove all extra spaces
