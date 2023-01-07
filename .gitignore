@@ -1,9 +1,9 @@
 .env
 __pycache__
-config.py
+configuration/config.py
 images
 jimmy_images
 shyste_images
 easy_video
-dancing.py
+commands/dancing.py
 .DS_Store
