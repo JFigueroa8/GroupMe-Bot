@@ -7,12 +7,15 @@ def disney_wait_times(access_token, bot_id, groupme_url, park_url, ride_name):
   response = requests.get(park_url)
   park_data = response.json()
 
+  print(park_data)
+
   for attraction in park_data:
     if attraction['meta']['type'] == 'ATTRACTION' and attraction['waitTime'] != None:
       attraction['name'] = attraction['name'].lower()
       
       if ride_name in attraction['name']:
         text = f"Name: {string.capwords(attraction['name'])}\nWait Time: {attraction['waitTime']}"
+        wait_times.append(f"Name: {string.capwords(attraction['name'])}\nWait Time: {attraction['waitTime']}")
   if len(wait_times) == 0:
     text = 'No wait times available'
   
