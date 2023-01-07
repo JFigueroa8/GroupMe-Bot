@@ -36,6 +36,7 @@ from commands.confused import confused
 from commands.cam import cam
 from commands.grow_up import grow_up
 from commands.dancing import dancing
+from commands.disney_wait_times import disney_wait_times
 from configuration.config import access_token, bot_id, giphy_api_key, group_id
 from configuration.urls import groupme_url, giphy_url, zenquotes_url, dad_jokes_url, chuck_norris_url, nba_url, nfl_url
 
@@ -135,6 +136,50 @@ def callback():
       character_name = character_name.replace(' ', '-')
 
     snap(character_name, access_token, bot_id, groupme_url)
+  elif '$magic kingdom' in text:
+    park_url = 'https://api.themeparks.wiki/preview/parks/WaltDisneyWorldMagicKingdom/waittime'
+
+    # Remove all extra spaces
+    def remove_all_extra_spaces(string):
+        return " ".join(string.split())
+
+    text = text.replace('$magic kingdom ', '')
+    ride_name = remove_all_extra_spaces(text)
+
+    disney_wait_times(access_token, bot_id, groupme_url, park_url, ride_name)
+  elif '$epcot' in text:
+    park_url = 'https://api.themeparks.wiki/preview/parks/WaltDisneyWorldEpcot/waittime'
+
+    # Remove all extra spaces
+    def remove_all_extra_spaces(string):
+        return " ".join(string.split())
+
+    text = text.replace('$epcot ', '')
+    ride_name = remove_all_extra_spaces(text)
+
+    disney_wait_times(access_token, bot_id, groupme_url, park_url, ride_name)
+  elif '$hollwood studios' in text:
+    park_url = 'https://api.themeparks.wiki/preview/parks/WaltDisneyWorldHollywoodStudios/waittime'
+
+    # Remove all extra spaces
+    def remove_all_extra_spaces(string):
+        return " ".join(string.split())
+
+    text = text.replace('$hollwood studios ', '')
+    ride_name = remove_all_extra_spaces(text)
+
+    disney_wait_times(access_token, bot_id, groupme_url, park_url, ride_name)
+  elif '$animal kingdom' in text:
+    park_url = 'https://api.themeparks.wiki/preview/parks/WaltDisneyWorldAnimalKingdom/waittime'
+
+    # Remove all extra spaces
+    def remove_all_extra_spaces(string):
+        return " ".join(string.split())
+
+    text = text.replace('$animal kingdom ', '')
+    ride_name = remove_all_extra_spaces(text)
+
+    disney_wait_times(access_token, bot_id, groupme_url, park_url, ride_name)
   else:
     return jsonify({'status': 'OK'}), 200
 
