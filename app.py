@@ -165,7 +165,7 @@ def callback():
     def remove_all_extra_spaces(string):
         return " ".join(string.split())
 
-    text = text.replace('$hollwood studios ', '')
+    text = text.replace('$hollywood studios ', '')
     ride_name = remove_all_extra_spaces(text)
 
     disney_wait_times(access_token, bot_id, groupme_url, park_url, ride_name)
