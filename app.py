@@ -36,6 +36,8 @@ from commands.confused import confused
 from commands.cam import cam
 from commands.grow_up import grow_up
 from commands.dancing import dancing
+from commands.jelly import jelly
+from commands.turtles import turtles
 from commands.groupme_recap import groupme_2022_recap
 from commands.disney_wait_times import disney_wait_times
 from configuration.config import access_token, bot_id, giphy_api_key, group_id
@@ -123,6 +125,10 @@ def callback():
     cam(access_token, bot_id, groupme_url)
   elif '$suntanstupidman' in text:
     suntanstupidman(access_token, bot_id, groupme_url)
+  elif '$turtles' in text:
+    turtles(access_token, bot_id, groupme_url)
+  elif '$jelly' in text:
+    jelly(access_token, bot_id, groupme_url)
   elif '$groupme recap' in text:
     groupme_2022_recap(access_token, bot_id, groupme_url)
   elif '$latin king' in text or '$namor' in text:
